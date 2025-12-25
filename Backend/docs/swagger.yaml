@@ -1,0 +1,1466 @@
+basePath: /api
+definitions:
+  handlers.AssignSectionRequest:
+    properties:
+      academic_year:
+        type: string
+      class_id:
+        type: integer
+      section_id:
+        type: integer
+    required:
+    - academic_year
+    - class_id
+    - section_id
+    type: object
+  handlers.CreateClassRequest:
+    properties:
+      capacity:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+    required:
+    - level
+    - name
+    type: object
+  handlers.CreateSectionRequest:
+    properties:
+      capacity:
+        type: integer
+      class_id:
+        type: integer
+      name:
+        type: string
+    required:
+    - class_id
+    - name
+    type: object
+  handlers.CreateStudentRequest:
+    properties:
+      address:
+        type: string
+      admission_number:
+        type: string
+      class_id:
+        type: integer
+      date_of_birth:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      parent_name:
+        type: string
+      parent_phone:
+        type: string
+      phone:
+        type: string
+      section_id:
+        type: integer
+      user_id:
+        type: integer
+    required:
+    - admission_number
+    - class_id
+    - date_of_birth
+    - first_name
+    - last_name
+    - section_id
+    - user_id
+    type: object
+  handlers.CreateSubjectRequest:
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+    required:
+    - code
+    - name
+    type: object
+  handlers.CreateTeacherRequest:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      employee_id:
+        type: string
+      experience:
+        type: integer
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+      qualification:
+        type: string
+      subject_specialization:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - date_of_birth
+    - employee_id
+    - first_name
+    - last_name
+    - user_id
+    type: object
+  handlers.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        enum:
+        - admin
+        - teacher
+        - student
+        type: string
+      status:
+        type: string
+    required:
+    - email
+    - password
+    - role
+    type: object
+  handlers.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  handlers.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  handlers.LoginResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/handlers.UserResponse'
+    type: object
+  handlers.RegisterRequest:
+    properties:
+      email:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        enum:
+        - admin
+        - teacher
+        - student
+        type: string
+    required:
+    - email
+    - password
+    - role
+    type: object
+  handlers.SuccessResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  handlers.UpdateClassRequest:
+    properties:
+      capacity:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+      status:
+        type: string
+    type: object
+  handlers.UpdateSectionRequest:
+    properties:
+      capacity:
+        type: integer
+      class_id:
+        type: integer
+      name:
+        type: string
+      status:
+        type: string
+    type: object
+  handlers.UpdateStudentRequest:
+    properties:
+      address:
+        type: string
+      class_id:
+        type: integer
+      date_of_birth:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      parent_name:
+        type: string
+      parent_phone:
+        type: string
+      phone:
+        type: string
+      section_id:
+        type: integer
+      status:
+        type: string
+    type: object
+  handlers.UpdateSubjectRequest:
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+      status:
+        type: string
+    type: object
+  handlers.UpdateTeacherRequest:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      experience:
+        type: integer
+      first_name:
+        type: string
+      gender:
+        type: string
+      last_name:
+        type: string
+      phone:
+        type: string
+      qualification:
+        type: string
+      status:
+        type: string
+      subject_specialization:
+        type: string
+    type: object
+  handlers.UpdateUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      status:
+        type: string
+    type: object
+  handlers.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      role:
+        type: string
+      status:
+        type: string
+    type: object
+  models.Class:
+    properties:
+      capacity:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      level:
+        description: Numeric level for sorting
+        type: integer
+      name:
+        description: e.g., "1st", "2nd", "3rd"
+        type: string
+      sections:
+        description: Relationships
+        items:
+          $ref: '#/definitions/models.Section'
+        type: array
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.ClassSection:
+    properties:
+      academic_year:
+        type: string
+      class:
+        $ref: '#/definitions/models.Class'
+      class_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      section:
+        $ref: '#/definitions/models.Section'
+      section_id:
+        type: integer
+      status:
+        type: string
+    type: object
+  models.Section:
+    properties:
+      capacity:
+        type: integer
+      class:
+        allOf:
+        - $ref: '#/definitions/models.Class'
+        description: Relationships
+      class_id:
+        type: integer
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        description: e.g., "A", "B", "C"
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Student:
+    properties:
+      address:
+        type: string
+      admission_number:
+        type: string
+      class:
+        $ref: '#/definitions/models.Class'
+      class_id:
+        type: integer
+      created_at:
+        type: string
+      date_of_birth:
+        type: string
+      first_name:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      parent_name:
+        type: string
+      parent_phone:
+        type: string
+      phone:
+        type: string
+      section:
+        $ref: '#/definitions/models.Section'
+      section_id:
+        type: integer
+      status:
+        type: string
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.User'
+        description: Relationships
+      user_id:
+        type: integer
+    type: object
+  models.Subject:
+    properties:
+      code:
+        type: string
+      created_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      status:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Teacher:
+    properties:
+      address:
+        type: string
+      created_at:
+        type: string
+      date_of_birth:
+        type: string
+      employee_id:
+        type: string
+      experience:
+        description: years
+        type: integer
+      first_name:
+        type: string
+      gender:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      phone:
+        type: string
+      qualification:
+        type: string
+      status:
+        type: string
+      subject_specialization:
+        type: string
+      updated_at:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.User'
+        description: Relationships
+      user_id:
+        type: integer
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      role:
+        type: string
+      status:
+        type: string
+      student:
+        allOf:
+        - $ref: '#/definitions/models.Student'
+        description: Relationships
+      teacher:
+        $ref: '#/definitions/models.Teacher'
+      updated_at:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@schoolerp.com
+    name: API Support
+  description: Comprehensive School ERP System API with Admin, Teacher, and Student
+    roles
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: School ERP System API
+  version: "1.0"
+paths:
+  /admin/classes:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all classes with their sections
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Class'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all classes
+      tags:
+      - Admin - Classes
+    post:
+      consumes:
+      - application/json
+      description: Create a new class record
+      parameters:
+      - description: Class data
+        in: body
+        name: class
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateClassRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Class'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new class
+      tags:
+      - Admin - Classes
+  /admin/classes/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a class record
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete class
+      tags:
+      - Admin - Classes
+    get:
+      consumes:
+      - application/json
+      description: Get a specific class by ID with its sections
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Class'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get class by ID
+      tags:
+      - Admin - Classes
+    put:
+      consumes:
+      - application/json
+      description: Update an existing class record
+      parameters:
+      - description: Class ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Class data
+        in: body
+        name: class
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateClassRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Class'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update class
+      tags:
+      - Admin - Classes
+  /admin/sections:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all sections, optionally filtered by class_id
+      parameters:
+      - description: Filter by class ID
+        in: query
+        name: class_id
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Section'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all sections
+      tags:
+      - Admin - Sections
+    post:
+      consumes:
+      - application/json
+      description: Create a new section record
+      parameters:
+      - description: Section data
+        in: body
+        name: section
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateSectionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Section'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new section
+      tags:
+      - Admin - Sections
+  /admin/sections/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a section record
+      parameters:
+      - description: Section ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete section
+      tags:
+      - Admin - Sections
+    get:
+      consumes:
+      - application/json
+      description: Get a specific section by ID
+      parameters:
+      - description: Section ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Section'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get section by ID
+      tags:
+      - Admin - Sections
+    put:
+      consumes:
+      - application/json
+      description: Update an existing section record
+      parameters:
+      - description: Section ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Section data
+        in: body
+        name: section
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateSectionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Section'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update section
+      tags:
+      - Admin - Sections
+  /admin/sections/assign:
+    post:
+      consumes:
+      - application/json
+      description: Create a ClassSection relationship for academic year
+      parameters:
+      - description: Assignment data
+        in: body
+        name: assignment
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.AssignSectionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.ClassSection'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Assign section to class
+      tags:
+      - Admin - Sections
+  /admin/students:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all students with optional filters
+      parameters:
+      - description: Filter by class ID
+        in: query
+        name: class_id
+        type: integer
+      - description: Filter by section ID
+        in: query
+        name: section_id
+        type: integer
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Student'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all students
+      tags:
+      - Admin - Students
+    post:
+      consumes:
+      - application/json
+      description: Create a new student record
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Student'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new student
+      tags:
+      - Admin - Students
+  /admin/students/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a student record
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete student
+      tags:
+      - Admin - Students
+    get:
+      consumes:
+      - application/json
+      description: Get a specific student by ID
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Student'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get student by ID
+      tags:
+      - Admin - Students
+    put:
+      consumes:
+      - application/json
+      description: Update an existing student record
+      parameters:
+      - description: Student ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateStudentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Student'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update student
+      tags:
+      - Admin - Students
+  /admin/subjects:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all subjects
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Subject'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all subjects
+      tags:
+      - Admin - Subjects
+    post:
+      consumes:
+      - application/json
+      description: Create a new subject record
+      parameters:
+      - description: Subject data
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateSubjectRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Subject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new subject
+      tags:
+      - Admin - Subjects
+  /admin/subjects/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a subject record
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete subject
+      tags:
+      - Admin - Subjects
+    get:
+      consumes:
+      - application/json
+      description: Get a specific subject by ID
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Subject'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get subject by ID
+      tags:
+      - Admin - Subjects
+    put:
+      consumes:
+      - application/json
+      description: Update an existing subject record
+      parameters:
+      - description: Subject ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Subject data
+        in: body
+        name: subject
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateSubjectRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Subject'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update subject
+      tags:
+      - Admin - Subjects
+  /admin/teachers:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all teachers with optional filters
+      parameters:
+      - default: 1
+        description: Page number
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Teacher'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all teachers
+      tags:
+      - Admin - Teachers
+    post:
+      consumes:
+      - application/json
+      description: Create a new teacher record
+      parameters:
+      - description: Teacher data
+        in: body
+        name: teacher
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateTeacherRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Teacher'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new teacher
+      tags:
+      - Admin - Teachers
+  /admin/teachers/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a teacher record
+      parameters:
+      - description: Teacher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete teacher
+      tags:
+      - Admin - Teachers
+    get:
+      consumes:
+      - application/json
+      description: Get a specific teacher by ID
+      parameters:
+      - description: Teacher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Teacher'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get teacher by ID
+      tags:
+      - Admin - Teachers
+    put:
+      consumes:
+      - application/json
+      description: Update an existing teacher record
+      parameters:
+      - description: Teacher ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Teacher data
+        in: body
+        name: teacher
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateTeacherRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Teacher'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update teacher
+      tags:
+      - Admin - Teachers
+  /admin/users:
+    get:
+      consumes:
+      - application/json
+      description: Get list of all users with optional filters
+      parameters:
+      - description: Filter by role (admin, teacher, student)
+        in: query
+        name: role
+        type: string
+      - description: Filter by status (active, inactive)
+        in: query
+        name: status
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/handlers.UserResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get all users
+      tags:
+      - Admin - Users
+    post:
+      consumes:
+      - application/json
+      description: Create a new user account
+      parameters:
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create a new user
+      tags:
+      - Admin - Users
+  /admin/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete user
+      tags:
+      - Admin - Users
+    get:
+      consumes:
+      - application/json
+      description: Get a single user by ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get user by ID
+      tags:
+      - Admin - Users
+    put:
+      consumes:
+      - application/json
+      description: Update an existing user
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User data
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update user
+      tags:
+      - Admin - Users
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticate user and return JWT token
+      parameters:
+      - description: Login credentials
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      summary: User login
+      tags:
+      - Authentication
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user (Admin only)
+      parameters:
+      - description: Registration data
+        in: body
+        name: register
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.UserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Register new user
+      tags:
+      - Authentication
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: 'Type "Bearer" followed by a space and JWT token. Example: "Bearer
+      eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
