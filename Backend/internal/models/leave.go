@@ -22,3 +22,5 @@ type LeaveRequest struct {
 	Approver  *User   `gorm:"foreignKey:ApprovedBy" json:"approver,omitempty"`
 }
 
+
+

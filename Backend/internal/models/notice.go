@@ -22,3 +22,5 @@ type Notice struct {
 	Creator User `gorm:"foreignKey:CreatedBy" json:"creator,omitempty"`
 }
 
+
+

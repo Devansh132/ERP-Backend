@@ -235,3 +235,5 @@ type AssignSectionRequest struct {
 	AcademicYear string `json:"academic_year" binding:"required"`
 }
 
+
+

@@ -43,3 +43,6 @@ Thumbs.db
 dist/
 build/
 
+# Documentation
+README.md
+README*.md

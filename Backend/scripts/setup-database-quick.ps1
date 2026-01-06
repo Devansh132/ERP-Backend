@@ -59,3 +59,5 @@ Write-Host "Remember: PATH change is only for this PowerShell session." -Foregro
 Write-Host "To make it permanent, run: .\scripts\add-postgres-to-path.ps1 (as Admin)" -ForegroundColor Yellow
 Write-Host ""
 
+
+

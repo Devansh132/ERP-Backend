@@ -29,3 +29,5 @@ Write-Host ""
 # Connect to PostgreSQL
 & $psqlPath -U postgres -h localhost
 
+
+

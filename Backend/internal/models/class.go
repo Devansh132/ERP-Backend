@@ -45,3 +45,5 @@ type ClassSection struct {
 	Section Section `gorm:"foreignKey:SectionID" json:"section,omitempty"`
 }
 
+
+

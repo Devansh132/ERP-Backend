@@ -72,3 +72,5 @@ Write-Host "1. Update .env file with your database credentials" -ForegroundColor
 Write-Host "2. Run: go run cmd/server/main.go" -ForegroundColor White
 Write-Host "3. Access Swagger at: http://localhost:8080/swagger/index.html" -ForegroundColor White
 
+
+

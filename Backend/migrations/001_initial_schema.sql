@@ -283,3 +283,5 @@ CREATE INDEX IF NOT EXISTS idx_notices_visibility ON notices(visibility_type);
 CREATE INDEX IF NOT EXISTS idx_leave_requests_teacher_id ON leave_requests(teacher_id);
 CREATE INDEX IF NOT EXISTS idx_leave_requests_status ON leave_requests(status);
 
+
+

@@ -21,3 +21,5 @@ type CalendarEvent struct {
 	Creator User `gorm:"foreignKey:CreatedBy" json:"creator,omitempty"`
 }
 
+
+

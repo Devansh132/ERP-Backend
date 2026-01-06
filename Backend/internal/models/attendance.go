@@ -23,3 +23,5 @@ type Attendance struct {
 	Section Section `gorm:"foreignKey:SectionID" json:"section,omitempty"`
 }
 
+
+

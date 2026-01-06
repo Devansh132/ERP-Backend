@@ -27,3 +27,5 @@ type Teacher struct {
 	User User `gorm:"foreignKey:UserID" json:"user,omitempty"`
 }
 
+
+

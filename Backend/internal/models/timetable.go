@@ -27,3 +27,5 @@ type Timetable struct {
 	Teacher Teacher `gorm:"foreignKey:TeacherID" json:"teacher,omitempty"`
 }
 
+
+

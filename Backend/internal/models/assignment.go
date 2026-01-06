@@ -40,3 +40,5 @@ type AssignmentSubmission struct {
 	Student    Student    `gorm:"foreignKey:StudentID" json:"student,omitempty"`
 }
 
+
+

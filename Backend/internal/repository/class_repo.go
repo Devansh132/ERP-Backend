@@ -43,3 +43,5 @@ func (r *ClassRepository) FindAll() ([]models.Class, error) {
 	return classes, err
 }
 
+
+
