@@ -75,6 +75,7 @@ func main() {
 	classHandler := handlers.NewClassHandler()
 	sectionHandler := handlers.NewSectionHandler()
 	subjectHandler := handlers.NewSubjectHandler()
+	attendanceHandler := handlers.NewAttendanceHandler()
 
 	// Setup router
 	router := gin.Default()
@@ -174,7 +175,16 @@ func main() {
 				subjects.DELETE("/:id", subjectHandler.DeleteSubject)
 			}
 
-			// Add more admin routes here (attendance, etc.)
+			// Attendance
+			attendance := admin.Group("/attendance")
+			{
+				attendance.POST("/mark", attendanceHandler.MarkAttendance)
+				attendance.GET("/class/:class_id", attendanceHandler.GetAttendanceByClass)
+				attendance.GET("/student/:student_id", attendanceHandler.GetAttendanceByStudent)
+				attendance.GET("/statistics", attendanceHandler.GetAttendanceStatistics)
+				attendance.GET("/reports", attendanceHandler.GetAttendanceReports)
+				attendance.PUT("/:id", attendanceHandler.UpdateAttendance)
+			}
 		}
 
 		// Teacher routes

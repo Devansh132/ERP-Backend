@@ -121,10 +121,6 @@ definitions:
         minLength: 6
         type: string
       role:
-        enum:
-        - admin
-        - teacher
-        - student
         type: string
       status:
         type: string
@@ -155,6 +151,25 @@ definitions:
       user:
         $ref: '#/definitions/handlers.UserResponse'
     type: object
+  handlers.MarkAttendanceRequest:
+    properties:
+      attendance:
+        additionalProperties:
+          type: string
+        description: student_id -> status
+        type: object
+      class_id:
+        type: integer
+      date:
+        type: string
+      section_id:
+        type: integer
+    required:
+    - attendance
+    - class_id
+    - date
+    - section_id
+    type: object
   handlers.RegisterRequest:
     properties:
       email:
@@ -177,6 +192,18 @@ definitions:
     properties:
       message:
         type: string
+    type: object
+  handlers.UpdateAttendanceRequest:
+    properties:
+      status:
+        enum:
+        - present
+        - absent
+        - late
+        - excused
+        type: string
+    required:
+    - status
     type: object
   handlers.UpdateClassRequest:
     properties:
@@ -277,6 +304,36 @@ definitions:
       role:
         type: string
       status:
+        type: string
+    type: object
+  models.Attendance:
+    properties:
+      class:
+        $ref: '#/definitions/models.Class'
+      class_id:
+        type: integer
+      created_at:
+        type: string
+      date:
+        type: string
+      id:
+        type: integer
+      marked_by:
+        description: User ID of teacher/admin
+        type: integer
+      section:
+        $ref: '#/definitions/models.Section'
+      section_id:
+        type: integer
+      status:
+        type: string
+      student:
+        allOf:
+        - $ref: '#/definitions/models.Student'
+        description: Relationships
+      student_id:
+        type: integer
+      updated_at:
         type: string
     type: object
   models.Class:
@@ -475,6 +532,229 @@ info:
   title: School ERP System API
   version: "1.0"
 paths:
+  /admin/attendance/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an existing attendance record
+      parameters:
+      - description: Attendance ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Attendance data
+        in: body
+        name: attendance
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.UpdateAttendanceRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Attendance'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update attendance record
+      tags:
+      - Admin - Attendance
+  /admin/attendance/class/{class_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get attendance records for a specific class and optional date
+      parameters:
+      - description: Class ID
+        in: path
+        name: class_id
+        required: true
+        type: integer
+      - description: Section ID
+        in: query
+        name: section_id
+        type: integer
+      - description: Date (YYYY-MM-DD)
+        in: query
+        name: date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Attendance'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get attendance by class
+      tags:
+      - Admin - Attendance
+  /admin/attendance/mark:
+    post:
+      consumes:
+      - application/json
+      description: Mark attendance for multiple students in a class/section on a specific
+        date
+      parameters:
+      - description: Attendance data
+        in: body
+        name: attendance
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.MarkAttendanceRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Mark attendance for a class/section
+      tags:
+      - Admin - Attendance
+  /admin/attendance/reports:
+    get:
+      consumes:
+      - application/json
+      description: Get attendance reports with filters
+      parameters:
+      - description: Class ID
+        in: query
+        name: class_id
+        type: integer
+      - description: Section ID
+        in: query
+        name: section_id
+        type: integer
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Attendance'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get attendance reports
+      tags:
+      - Admin - Attendance
+  /admin/attendance/statistics:
+    get:
+      consumes:
+      - application/json
+      description: Get attendance statistics for a student or class
+      parameters:
+      - description: Student ID
+        in: query
+        name: student_id
+        type: integer
+      - description: Class ID
+        in: query
+        name: class_id
+        type: integer
+      - description: Section ID
+        in: query
+        name: section_id
+        type: integer
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get attendance statistics
+      tags:
+      - Admin - Attendance
+  /admin/attendance/student/{student_id}:
+    get:
+      consumes:
+      - application/json
+      description: Get attendance records for a specific student
+      parameters:
+      - description: Student ID
+        in: path
+        name: student_id
+        required: true
+        type: integer
+      - description: Start date (YYYY-MM-DD)
+        in: query
+        name: start_date
+        type: string
+      - description: End date (YYYY-MM-DD)
+        in: query
+        name: end_date
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Attendance'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handlers.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get attendance by student
+      tags:
+      - Admin - Attendance
   /admin/classes:
     get:
       consumes:

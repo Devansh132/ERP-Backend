@@ -1,3 +1,6 @@
+//go:build script
+// +build script
+
 package main
 
 import (
@@ -55,6 +58,3 @@ func main() {
 	fmt.Printf("New Password: %s\n", password)
 	fmt.Println("\nYou can now login with these credentials.")
 }
-
-
-
